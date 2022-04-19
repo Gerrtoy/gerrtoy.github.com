@@ -120,6 +120,10 @@
             </div>
         </div>
     </div>
+    <div class="alert alert-success alert-dismissible fade show text-center d-none my-alert" role="alert">
+  <strong>Thanks!</strong> I will check your message :)
+  
+</div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="media-container-column col-lg-8" data-form-type="formoid">
@@ -154,7 +158,11 @@
                         </div>
             
                         <div class="d-grid gap-2 d-md-flex mb-3 justify-content-md-end">
-  <button class="btn btn-Success bg-success bi-send-fill text-light" type="submit">Send</button>
+  <button class="btn btn-Success bg-success bi-send-fill text-light btn-send" type="submit">Send</button>
+  <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
 </div>
                     </form>
             </div>
@@ -163,11 +171,23 @@
     <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbyhahFo5oadyJFC6dZ7DFVBcHPDZSmvpgSuRDiAxIona8bZ44LzsNZvbZNRGrcBGSBuqA/exec'
   const form = document.forms['gerrtoy-cf']
-
+  const btnSend = document.querySelector(`.btn-send`)
+  const btnLoading = document.querySelector(`.btn-loading`)
+  const btnAlert = document.querySelector(`.my-alert`)
+  
   form.addEventListener('submit', e => {
     e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => console.log('Success!', response))
+
+    btnSend.classList.toggle(`d-none`)
+    btnLoading.classList.toggle(`d-none`)
+   
+    fetch(scriptURL, {method: 'POST', body: new FormData(form)})
+      .then(response => {
+        btnSend.classList.toggle(`d-none`)
+    btnLoading.classList.toggle(`d-none`)
+    btnAlert.classList.toggle(`d-none`)
+    form.reset()
+        console.log('Success!', response)})
       .catch(error => console.error('Error!', error.message))
   })
 </script>
@@ -175,5 +195,5 @@
 
 <footer class="bg-warning fw-bold text-dark text-center p-3">
   <p>Made By <a href="https://www.instagram.com/gerrtoy/" class="text-black fw-bold text-dark "><i class="bi bi-instagram text-danger"></i>Gerrtoy</a></p>
-  <p>+62 815-2750-2545</p>
+  <p>+62 815-2750-2545</p>  
 </footer>
